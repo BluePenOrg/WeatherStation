@@ -1,44 +1,61 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useEffect, useState } from 'react';
-
-import { thingSpeak } from './lib/thingSpeakAPI';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 
-export default function App() { 
-  const [temp, setTemp] = useState("");
-  const [umidade, setUmidade] = useState("");
+import Home from "./src/screens/Home";
+import Historic from './src/screens/Historic';
+import WeatherStations from './src/screens/WeatherStations';
+import Profile from './src/screens/Profile';
 
-  async function loadData() {
-    try {
-      const dados = await thingSpeak.get('channels/2073568/feeds.json?api_key=9BGI4MYLN058ZI7I&results=1');
-      console.log(dados.data)
-      setTemp(dados.data.feeds[0].field1)
-      setUmidade(dados.data.feeds[0].field2)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+const Tab = createBottomTabNavigator();
 
-  useEffect(()=>{
-    
-    setInterval(loadData, 3000);
-  }, [])
+export default function App() {
 
- return (
-    <View style={styles.container}>
-      <Text>Última temperatura - {temp}</Text>
-      <Text>Última umidade - {umidade}</Text>
-      <StatusBar style="auto" />
-    </View>
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Tab.Screen 
+          name="Home" 
+          component={Home} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name='Historico' 
+          component={Historic} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="analytics" color={color} size={size} />
+            ),
+          }}  
+        />
+        <Tab.Screen 
+          name='Estações'
+          component={WeatherStations} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="location-outline" color={color} size={size} />
+            ),
+          }}    
+        />
+        <Tab.Screen 
+          name='Perfil' 
+          component={Profile} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person-circle-outline" color={color} size={size} />
+            ),
+          }}   
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
