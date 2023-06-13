@@ -16,19 +16,22 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, setIsLogged] = useState(false);
 
-  if( !isLogged ) {
-    const Stack = createStackNavigator()
+  if (!isLogged) {
+    const Stack = createStackNavigator();
+
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SignIn">
-          <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}}/>
-          <Stack.Screen name="SignUp" component={SignUp} options={{headerShown: false}}/>
+          <Stack.Screen name="SignIn" options={{ headerShown: false }}>
+            {props => <SignIn {...props} setIsLogged={setIsLogged} />}
+          </Stack.Screen>
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-      )
-  } 
+    );
+  }
 
   return (
     <NavigationContainer>
@@ -66,13 +69,14 @@ export default function App() {
         />
         <Tab.Screen 
           name='Perfil' 
-          component={Profile} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="person-circle-outline" color={color} size={size} />
             ),
           }}   
-        />
+        >
+          {props => <Profile {...props} setIsLogged={setIsLogged} /> } 
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );

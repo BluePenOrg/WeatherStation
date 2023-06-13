@@ -12,11 +12,11 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginRight: 30,
-        marginBottom: 20,
+        marginTop: 25,
     },
     infoContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        
     },
     temp: {
         fontSize: 70,
@@ -34,4 +34,5 @@ export const styles = StyleSheet.create({
         top: '30%',
         right: 0,
     },
+    
 });
